@@ -1,0 +1,1862 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AW Studio | Premium Web Development</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.11.4/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.11.4/ScrollTrigger.min.js"></script>
+    <style>
+        :root {
+            --primary: #7b2cbf;
+            --primary-dark: #5a189a;
+            --primary-light: #9d4edd;
+            --dark: #212529;
+            --light: #f8f9fa;
+            --gray: #6c757d;
+            --dark-bg: #10002b;
+            --light-bg: #f3e9ff; 
+            --transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+            --shadow-sm: 0 1px 3px rgba(0,0,0,0.12);
+            --shadow-md: 0 4px 6px rgba(0,0,0,0.1);
+            --shadow-lg: 0 10px 25px rgba(0,0,0,0.1);
+            --shadow-xl: 0 20px 50px rgba(0,0,0,0.2);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--light-bg);
+            color: var(--dark);
+            overflow-x: hidden;
+            line-height: 1.6;
+            transition: background-color 0.5s ease;
+        }
+
+        body.dark-mode {
+            background-color: var(--dark-bg);
+            color: var(--light);
+        }
+
+        /* Header Styles */
+        header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            z-index: 1000;
+            padding: 1.5rem 5%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background-color: rgba(212, 163, 255, 0.95);
+            box-shadow: var(--shadow-sm);
+            transition: all 0.5s ease;
+        }
+
+        body.dark-mode header {
+            background-color: rgba(16, 0, 43, 0.95);
+            box-shadow: 0 1px 3px rgba(0,0,0,0.3);
+        }
+
+        .logo {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: white;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .logo span {
+            color: white;
+        }
+
+        .logo-icon {
+            width: 30px;
+            height: 30px;
+            background-color: white;
+            border-radius: 6px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--primary);
+            font-weight: bold;
+        }
+
+        nav ul {
+            display: flex;
+            gap: 2rem;
+            list-style: none;
+        }
+
+        nav a {
+            text-decoration: none;
+            color: white;
+            font-weight: 500;
+            position: relative;
+            transition: color 0.3s ease;
+        }
+
+        nav a::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background-color: white;
+            transition: width 0.3s ease;
+        }
+
+        nav a:hover::after {
+            width: 100%;
+        }
+
+        .theme-toggle {
+            background: none;
+            border: none;
+            cursor: pointer;
+            font-size: 1.2rem;
+            color: white;
+            transition: transform 0.5s ease;
+        }
+
+        .theme-toggle:hover {
+            transform: rotate(30deg);
+        }
+
+        .mobile-menu-btn {
+            display: none;
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            color: white;
+            cursor: pointer;
+        }
+
+        /* Language Selector */
+        .language-selector {
+            position: relative;
+            margin-left: 1rem;
+        }
+
+        .language-btn {
+            background: none;
+            border: none;
+            color: white;
+            font-weight: 500;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .language-dropdown {
+            position: absolute;
+            top: 100%;
+            right: 0;
+            background-color: white;
+            border-radius: 6px;
+            box-shadow: var(--shadow-md);
+            padding: 0.5rem 0;
+            min-width: 120px;
+            display: none;
+            z-index: 1001;
+        }
+
+        body.dark-mode .language-dropdown {
+            background-color: #1e293b;
+        }
+
+        .language-dropdown a {
+            display: block;
+            padding: 0.5rem 1rem;
+            color: var(--dark);
+            text-decoration: none;
+            transition: all 0.3s ease;
+        }
+
+        body.dark-mode .language-dropdown a {
+            color: var(--light);
+        }
+
+        .language-dropdown a:hover {
+            background-color: rgba(123, 44, 191, 0.1);
+        }
+
+        body.dark-mode .language-dropdown a:hover {
+            background-color: rgba(157, 78, 221, 0.2);
+        }
+
+        .language-selector:hover .language-dropdown {
+            display: block;
+        }
+
+        /* Hero Section */
+        .hero {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            padding: 0 5%;
+            position: relative;
+            overflow: hidden;
+            padding-top: 80px;
+        }
+
+        .hero-content {
+            max-width: 600px;
+            z-index: 2;
+        }
+
+        .hero h1 {
+            font-size: 3.5rem;
+            font-weight: 700;
+            line-height: 1.2;
+            margin-bottom: 1.5rem;
+        }
+
+        .hero p {
+            font-size: 1.2rem;
+            color: var(--gray);
+            margin-bottom: 2rem;
+        }
+
+        body.dark-mode .hero p {
+            color: #94a3b8;
+        }
+
+        .btn {
+            display: inline-block;
+            padding: 0.8rem 2rem;
+            background-color: var(--primary);
+            color: white;
+            border-radius: 6px;
+            text-decoration: none;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .btn:hover {
+            background-color: var(--primary-dark);
+            transform: translateY(-3px);
+            box-shadow: var(--shadow-md);
+        }
+
+        .btn-outline {
+            background-color: transparent;
+            border: 2px solid var(--primary);
+            color: var(--primary);
+            margin-left: 1rem;
+        }
+
+        body.dark-mode .btn-outline {
+            color: var(--light);
+            border-color: var(--light);
+        }
+
+        .btn-outline:hover {
+            background-color: var(--primary);
+            color: white;
+        }
+
+        body.dark-mode .btn-outline:hover {
+            border-color: var(--primary);
+        }
+
+        .hero-image {
+            position: absolute;
+            right: 5%;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 40%;
+            max-width: 600px;
+            cursor: pointer;
+            transition: all 0.5s ease;
+        }
+
+        [dir="rtl"] .hero-image {
+            right: auto;
+            left: 5%;
+        }
+
+        .hero-image img {
+            width: 100%;
+            height: auto;
+            border-radius: 12px;
+            box-shadow: var(--shadow-xl);
+        }
+
+        /* Services Section */
+        .section {
+            padding: 8rem 5%;
+            position: relative;
+        }
+
+        .section-title {
+            font-size: 2.5rem;
+            font-weight: 700;
+            text-align: center;
+            margin-bottom: 5rem;
+        }
+
+        .services-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+        }
+
+        .service-card {
+            background-color: white;
+            border-radius: 12px;
+            padding: 2rem;
+            box-shadow: var(--shadow-lg);
+            transition: all 0.5s ease;
+            cursor: pointer;
+        }
+
+        body.dark-mode .service-card {
+            background-color: #1e293b;
+        }
+
+        .service-card:hover {
+            transform: translateY(-10px);
+            box-shadow: var(--shadow-xl);
+        }
+
+        .service-icon {
+            width: 60px;
+            height: 60px;
+            background-color: var(--primary-light);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 1.5rem;
+            color: white;
+            font-size: 1.5rem;
+        }
+
+        .service-card h3 {
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .service-card p {
+            color: var(--gray);
+            margin-bottom: 1.5rem;
+        }
+
+        body.dark-mode .service-card p {
+            color: #94a3b8;
+        }
+
+        .service-link {
+            display: inline-flex;
+            align-items: center;
+            color: var(--primary);
+            text-decoration: none;
+            font-weight: 500;
+            transition: all 0.3s ease;
+        }
+
+        .service-link i {
+            margin-left: 0.5rem;
+            transition: transform 0.3s ease;
+        }
+
+        .service-link:hover i {
+            transform: translateX(5px);
+        }
+
+        /* Portfolio Section */
+        .portfolio-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+        }
+
+        .portfolio-item {
+            position: relative;
+            border-radius: 12px;
+            overflow: hidden;
+            height: 300px;
+            cursor: pointer;
+        }
+
+        .portfolio-img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.5s ease;
+        }
+
+        .portfolio-overlay {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: linear-gradient(to top, rgba(0,0,0,0.8), transparent);
+            padding: 2rem;
+            transform: translateY(100px);
+            opacity: 0;
+            transition: all 0.5s ease;
+        }
+
+        .portfolio-item:hover .portfolio-overlay {
+            transform: translateY(0);
+            opacity: 1;
+        }
+
+        .portfolio-item:hover .portfolio-img {
+            transform: scale(1.1);
+        }
+
+        .portfolio-overlay h3 {
+            color: white;
+            font-size: 1.5rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .portfolio-overlay p {
+            color: rgba(255,255,255,0.8);
+            margin-bottom: 1rem;
+        }
+
+        .portfolio-link {
+            display: inline-flex;
+            align-items: center;
+            color: rgb(0, 133, 97);
+            text-decoration: none;
+            font-weight: 500;
+        }
+
+        .portfolio-link i {
+            margin-left: 0.5rem;
+        }
+
+        /* About Section */
+        .about-content {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 4rem;
+            align-items: center;
+        }
+
+        .about-image {
+            position: relative;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: var(--shadow-xl);
+            cursor: pointer;
+        }
+
+        .about-image img {
+            width: 100%;
+            height: auto;
+            display: block;
+        }
+
+        .about-text h2 {
+            font-size: 2.5rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .about-text p {
+            color: var(--gray);
+            margin-bottom: 1.5rem;
+            line-height: 1.8;
+        }
+
+        body.dark-mode .about-text p {
+            color: #94a3b8;
+        }
+
+        .stats {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1rem;
+            margin-top: 2rem;
+        }
+
+        .stat-item {
+            text-align: center;
+        }
+
+        .stat-number {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: var(--primary);
+            margin-bottom: 0.5rem;
+        }
+
+        .stat-label {
+            color: var(--gray);
+            font-size: 0.9rem;
+        }
+
+        /* Contact Section */
+        .contact-container {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 4rem;
+        }
+
+        .contact-info h2 {
+            font-size: 2.5rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .contact-info p {
+            color: var(--gray);
+            margin-bottom: 2rem;
+            line-height: 1.8;
+        }
+
+        body.dark-mode .contact-info p {
+            color: #94a3b8;
+        }
+
+        .contact-details {
+            margin-top: 2rem;
+        }
+
+        .contact-item {
+            display: flex;
+            align-items: center;
+            margin-bottom: 1.5rem;
+            cursor: pointer;
+        }
+
+        .contact-icon {
+            width: 50px;
+            height: 50px;
+            background-color: var(--primary-light);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 1.2rem;
+            margin-right: 1rem;
+        }
+
+        .contact-text h4 {
+            font-size: 1.2rem;
+            margin-bottom: 0.3rem;
+        }
+
+        .contact-text p {
+            margin-bottom: 0;
+            color: var(--gray);
+        }
+
+        .contact-form {
+            background-color: white;
+            border-radius: 12px;
+            padding: 2rem;
+            box-shadow: var(--shadow-lg);
+        }
+
+        body.dark-mode .contact-form {
+            background-color: #1e293b;
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 500;
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 0.8rem 1rem;
+            border: 1px solid #e2e8f0";
+            border-radius: 6px;
+            font-family: 'Inter', sans-serif;
+            transition: all 0.3s ease;
+        }
+
+        body.dark-mode .form-control {
+            background-color: #334155;
+            border-color: #475569;
+            color: white;
+        }
+
+        .form-control:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(123, 44, 191, 0.2);
+        }
+
+        textarea.form-control {
+            min-height: 150px;
+            resize: vertical;
+        }
+
+        .submit-btn {
+            width: 100%;
+            padding: 0.8rem;
+            background-color: var(--primary);
+            color: white;
+            border: none;
+            border-radius: 6px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .submit-btn:hover {
+            background-color: var(--primary-dark);
+        }
+
+        /* Footer */
+        footer {
+            background-color: var(--dark);
+            color: white;
+            padding: 4rem 5%;
+        }
+
+        .footer-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 2rem;
+            margin-bottom: 3rem;
+        }
+
+        .footer-logo {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: white;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .footer-logo-icon {
+            width: 30px;
+            height: 30px;
+            background-color: white;
+            border-radius: 6px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--primary);
+            font-weight: bold;
+        }
+
+        .footer-about p {
+            color: #adb5bd;
+            line-height: 1.8;
+            margin-bottom: 1.5rem;
+        }
+
+        .social-links {
+            display: flex;
+            gap: 1rem;
+        }
+
+        .social-link {
+            width: 40px;
+            height: 40px;
+            background-color: #343a40;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        body.dark-mode .social-link {
+            background-color: #1e293b;
+        }
+
+        .social-link:hover {
+            background-color: var(--primary);
+            transform: translateY(-3px);
+        }
+
+        .footer-links h3 {
+            font-size: 1.2rem;
+            margin-bottom: 1.5rem;
+            position: relative;
+            padding-bottom: 0.5rem;
+        }
+
+        .footer-links h3::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 40px;
+            height: 2px;
+            background-color: var(--primary);
+        }
+
+        .footer-links ul {
+            list-style: none;
+        }
+
+        .footer-links li {
+            margin-bottom: 0.8rem;
+        }
+
+        .footer-links a {
+            color: #adb5bd;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .footer-links a:hover {
+            color: white;
+            padding-left: 5px;
+        }
+
+        .footer-newsletter p {
+            color: #adb5bd;
+            margin-bottom: 1.5rem;
+            line-height: 1.8;
+        }
+
+        .newsletter-form {
+            display: flex;
+        }
+
+        .newsletter-input {
+            flex: 1;
+            padding: 0.8rem;
+            border: none;
+            border-radius: 6px 0 0 6px;
+            font-family: 'Inter', sans-serif;
+        }
+
+        .newsletter-btn {
+            padding: 0 1.5rem;
+            background-color: var(--primary);
+            color: white;
+            border: none;
+            border-radius: 0 6px 6px 0;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .newsletter-btn:hover {
+            background-color: var(--primary-dark);
+        }
+
+        .footer-bottom {
+            border-top: 1px solid #343a40;
+            padding-top: 2rem;
+            text-align: center;
+            color: #adb5bd;
+            font-size: 0.9rem;
+        }
+
+        body.dark-mode .footer-bottom {
+            border-top-color: #1e293b;
+        }
+
+        /* Animations */
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+
+        .floating {
+            animation: float 6s ease-in-out infinite;
+        }
+
+        /* Responsive */
+        @media (max-width: 1024px) {
+            .hero h1 {
+                font-size: 3rem;
+            }
+            
+            .about-content,
+            .contact-container {
+                grid-template-columns: 1fr;
+                gap: 2rem;
+            }
+            
+            .hero-image {
+                position: relative;
+                right: auto;
+                left: auto !important;
+                top: auto;
+                transform: none;
+                width: 100%;
+                max-width: 100%;
+                margin-top: 3rem;
+            }
+        }
+
+        @media (max-width: 768px) {
+            header {
+                padding: 1rem 5%;
+            }
+            
+            nav {
+                position: fixed;
+                top: 80px;
+                left: 0;
+                width: 100%;
+                background-color: white;
+                padding: 1rem 5%;
+                box-shadow: var(--shadow-md);
+                transform: translateY(-150%);
+                transition: transform 0.5s ease;
+                z-index: 999;
+            }
+            
+            body.dark-mode nav {
+                background-color: #1e293b;
+            }
+            
+            nav.active {
+                transform: translateY(0);
+            }
+            
+            nav ul {
+                flex-direction: column;
+                gap: 1rem;
+            }
+            
+            .mobile-menu-btn {
+                display: block;
+            }
+            
+            .hero h1 {
+                font-size: 2.5rem;
+            }
+            
+            .hero p {
+                font-size: 1rem;
+            }
+            
+            .btn {
+                padding: 0.7rem 1.5rem;
+                font-size: 0.9rem;
+            }
+            
+            .section-title {
+                font-size: 2rem;
+                margin-bottom: 3rem;
+            }
+
+            .language-selector {
+                margin-left: 0.5rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .hero h1 {
+                font-size: 2rem;
+            }
+            
+            .btn-group {
+                display: flex;
+                flex-direction: column;
+                gap: 1rem;
+            }
+            
+            .btn-outline {
+                margin-left: 0;
+            }
+            
+            .stats {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body class="dark-mode">
+    <!-- Header -->
+    <header>
+        <a href="#" class="logo">
+            <div class="logo-icon">AW</div>
+            <span>Studio</span>
+        </a>
+        
+        <nav>
+            <ul>
+                <li><a href="#home" data-i18n="nav.home">Home</a></li>
+                <li><a href="#services" data-i18n="nav.services">Services</a></li>
+                <li><a href="#portfolio" data-i18n="nav.portfolio">Portfolio</a></li>
+                <li><a href="#about" data-i18n="nav.about">About</a></li>
+                <li><a href="#contact" data-i18n="nav.contact">Contact</a></li>
+            </ul>
+        </nav>
+        
+        <div class="language-selector">
+            <button class="language-btn" id="languageBtn">
+                <i class="fas fa-globe"></i>
+                <span data-i18n="language.english">English</span>
+            </button>
+            <div class="language-dropdown">
+                <a href="#" data-lang="en" data-i18n="language.english">English</a>
+                <a href="#" data-lang="fr" data-i18n="language.french">Français</a>
+                <a href="#" data-lang="ar" data-i18n="language.arabic">العربية</a>
+            </div>
+        </div>
+        
+        <button class="theme-toggle">
+            <i class="fas fa-sun"></i>
+        </button>
+        
+        <button class="mobile-menu-btn">
+            <i class="fas fa-bars"></i>
+        </button>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="hero" id="home">
+        <div class="hero-content">
+            <h1 data-i18n="hero.title">Premium Web Solutions for Modern Businesses</h1>
+            <p data-i18n="hero.subtitle">We craft high-performance websites that drive results and elevate your digital presence to new heights.</p>
+            <div class="btn-group">
+                <a href="https://aw-studio-dev.github.io/showcase/" class="btn" data-i18n="hero.button1" target="_blank">Get Started</a>
+                <a href="https://aw-studio-dev.github.io/showcase/" class="btn btn-outline" data-i18n="hero.button2" target="_blank">View Work</a>
+            </div>
+        </div>
+        
+        <div class="hero-image floating" onclick="window.open('https://aw-studio-dev.github.io/showcase/', '_blank')">
+            <img src="https://images.unsplash.com/photo-1551288049-bebda4e38f71?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1470&q=80" alt="Web Development">
+        </div>
+    </section>
+
+    <!-- Services Section -->
+    <section class="section" id="services">
+        <h2 class="section-title" data-i18n="services.title">Our Services</h2>
+        
+        <div class="services-grid">
+            <div class="service-card" onclick="window.open('https://aw-studio-dev.github.io/showcase/', '_blank')">
+                <div class="service-icon">
+                    <i class="fas fa-code"></i>
+                </div>
+                <h3 data-i18n="services.service1.title">Custom Development</h3>
+                <p data-i18n="services.service1.description">Tailored web solutions built from scratch to meet your specific business requirements and goals.</p>
+                <a href="https://aw-studio-dev.github.io/showcase/" class="service-link" data-i18n="services.learn_more" target="_blank">Learn more <i class="fas fa-arrow-right"></i></a>
+            </div>
+            
+            <div class="service-card" onclick="window.open('https://aw-studio-dev.github.io/showcase/', '_blank')">
+                <div class="service-icon">
+                    <i class="fas fa-paint-brush"></i>
+                </div>
+                <h3 data-i18n="services.service2.title">UI/UX Design</h3>
+                <p data-i18n="services.service2.description">Beautiful, intuitive interfaces designed to enhance user experience and drive engagement.</p>
+                <a href="https://aw-studio-dev.github.io/showcase/" class="service-link" data-i18n="services.learn_more" target="_blank">Learn more <i class="fas fa-arrow-right"></i></a>
+            </div>
+            
+            <div class="service-card" onclick="window.open('https://aw-studio-dev.github.io/showcase/', '_blank')">
+                <div class="service-icon">
+                    <i class="fas fa-mobile-alt"></i>
+                </div>
+                <h3 data-i18n="services.service3.title">Responsive Design</h3>
+                <p data-i18n="services.service3.description">Flawless performance across all devices, ensuring your website looks perfect on any screen.</p>
+                <a href="https://aw-studio-dev.github.io/showcase/" class="service-link" data-i18n="services.learn_more" target="_blank">Learn more <i class="fas fa-arrow-right"></i></a>
+            </div>
+            
+            <div class="service-card" onclick="window.open('https://aw-studio-dev.github.io/showcase/', '_blank')">
+                <div class="service-icon">
+                    <i class="fas fa-search"></i>
+                </div>
+                <h3 data-i18n="services.service4.title">SEO Optimization</h3>
+                <p data-i18n="services.service4.description">Technical and content optimization to improve your search rankings and organic traffic.</p>
+                <a href="https://aw-studio-dev.github.io/showcase/" class="service-link" data-i18n="services.learn_more" target="_blank">Learn more <i class="fas fa-arrow-right"></i></a>
+            </div>
+            
+            <div class="service-card" onclick="window.open('https://aw-studio-dev.github.io/showcase/', '_blank')">
+                <div class="service-icon">
+                    <i class="fas fa-shopping-cart"></i>
+                </div>
+                <h3 data-i18n="services.service5.title">E-Commerce</h3>
+                <p data-i18n="services.service5.description">Powerful online stores with secure payment gateways and intuitive product management.</p>
+                <a href="https://aw-studio-dev.github.io/showcase/" class="service-link" data-i18n="services.learn_more" target="_blank">Learn more <i class="fas fa-arrow-right"></i></a>
+            </div>
+            
+            <div class="service-card" onclick="window.open('https://aw-studio-dev.github.io/showcase/', '_blank')">
+                <div class="service-icon">
+                    <i class="fas fa-server"></i>
+                </div>
+                <h3 data-i18n="services.service6.title">Web Hosting</h3>
+                <p data-i18n="services.service6.description">Reliable, high-speed hosting with 99.9% uptime and expert technical support.</p>
+                <a href="https://aw-studio-dev.github.io/showcase/" class="service-link" data-i18n="services.learn_more" target="_blank">Learn more <i class="fas fa-arrow-right"></i></a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Portfolio Section -->
+    <section class="section" id="portfolio">
+        <h2 class="section-title" data-i18n="portfolio.title">Our Portfolio</h2>
+        
+        <div class="portfolio-grid">
+            <div class="portfolio-item" onclick="window.open('https://aw-studio-dev.github.io/showcase/', '_blank')">
+                <img src="https://i.pinimg.com/736x/ae/c2/4a/aec24ae439374de6d57d60b812f1064f.jpg" alt="Project 1" class="portfolio-img">
+                <div class="portfolio-overlay">
+                    <h3 data-i18n="portfolio.project1.title">E-Commerce Platform</h3>
+                    <p data-i18n="portfolio.project1.description">Complete online store with custom CMS and payment integration</p>
+                    <a href="https://aw-studio-dev.github.io/showcase/" class="portfolio-link" data-i18n="portfolio.view_project" target="_blank">View Project <i class="fas fa-arrow-right"></i></a>
+                </div>
+            </div>
+            
+            <div class="portfolio-item" onclick="window.open('https://aw-studio-dev.github.io/showcase/', '_blank')">
+                <img src="https://images.unsplash.com/photo-1559028012-481c04fa702d?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1536&q=80" alt="Project 2" class="portfolio-img">
+                <div class="portfolio-overlay">
+                    <h3 data-i18n="portfolio.project2.title">Corporate Website</h3>
+                    <p data-i18n="portfolio.project2.description">Modern corporate site with interactive elements</p>
+                    <a href="https://aw-studio-dev.github.io/showcase/" class="portfolio-link" data-i18n="portfolio.view_project" target="_blank">View Project <i class="fas fa-arrow-right"></i></a>
+                </div>
+            </div>
+            
+            <div class="portfolio-item" onclick="window.open('https://aw-studio-dev.github.io/showcase/', '_blank')">
+                <img src="https://images.unsplash.com/photo-1581291518633-83b4ebd1d83e?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1470&q=80" alt="Project 3" class="portfolio-img">
+                <div class="portfolio-overlay">
+                    <h3 data-i18n="portfolio.project3.title">Mobile App Dashboard</h3>
+                    <p data-i18n="portfolio.project3.description">Analytics dashboard for health tracking app</p>
+                    <a href="https://aw-studio-dev.github.io/showcase/" class="portfolio-link" data-i18n="portfolio.view_project" target="_blank">View Project <i class="fas fa-arrow-right"></i></a>
+                </div>
+            </div>
+            
+            <div class="portfolio-item" onclick="window.open('https://aw-studio-dev.github.io/showcase/', '_blank')">
+                <img src="https://i.pinimg.com/736x/26/16/0b/26160bd4b1aa17c35eef872911b4e738.jpg" alt="Project 4" class="portfolio-img">
+                <div class="portfolio-overlay">
+                    <h3 data-i18n="portfolio.project4.title">Restaurant Website</h3>
+                    <p data-i18n="portfolio.project4.description">Online reservation system with menu management</p>
+                    <a href="https://aw-studio-dev.github.io/showcase/" class="portfolio-link" data-i18n="portfolio.view_project" target="_blank">View Project <i class="fas fa-arrow-right"></i></a>
+                </div>
+            </div>
+            
+            <div class="portfolio-item" onclick="window.open('https://aw-studio-dev.github.io/showcase/', '_blank')">
+                <img src="https://images.unsplash.com/photo-1547658719-da2b51169166?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1528&q=80" alt="Project 5" class="portfolio-img">
+                <div class="portfolio-overlay">
+                    <h3 data-i18n="portfolio.project5.title">Portfolio Website</h3>
+                    <p data-i18n="portfolio.project5.description">Creative portfolio for photography studio</p>
+                    <a href="https://aw-studio-dev.github.io/showcase/" class="portfolio-link" data-i18n="portfolio.view_project" target="_blank">View Project <i class="fas fa-arrow-right"></i></a>
+                </div>
+            </div>
+            
+            <div class="portfolio-item" onclick="window.open('https://aw-studio-dev.github.io/showcase/', '_blank')">
+                <img src="https://i.pinimg.com/736x/3f/25/4f/3f254f9afa9ee7769bdd0d837f603b10.jpg" alt="Project 6" class="portfolio-img">
+                <div class="portfolio-overlay">
+                    <h3 data-i18n="portfolio.project6.title">Blog Platform</h3>
+                    <p data-i18n="portfolio.project6.description">Custom CMS for content creators</p>
+                    <a href="https://aw-studio-dev.github.io/showcase/" class="portfolio-link" data-i18n="portfolio.view_project" target="_blank">View Project <i class="fas fa-arrow-right"></i></a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- About Section -->
+    <section class="section" id="about">
+        <div class="about-content">
+            <div class="about-image floating" onclick="window.open('https://aw-studio-dev.github.io/showcase/', '_blank')">
+                <img src="https://images.unsplash.com/photo-1522071820081-009f0129c71c?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1470&q=80" alt="Our Team">
+            </div>
+            
+            <div class="about-text">
+                <h2 class="section-title" data-i18n="about.title">About AW Studio</h2>
+                <p data-i18n="about.description1">AW Studio is a team specialized in creating full stack, fast and high-quality websites.</p>
+                <p data-i18n="about.description2">Our team of expert developers, designers, and strategists work collaboratively to create websites that not only look stunning but also perform exceptionally, driving real business results.</p>
+                
+                <div class="stats">
+                    <div class="stat-item" onclick="window.open('https://aw-studio-dev.github.io/showcase/', '_blank')">
+                        <div class="stat-number">50+</div>
+                        <div class="stat-label" data-i18n="about.stats.projects">Projects Completed</div>
+                    </div>
+                    
+                    <div class="stat-item" onclick="window.open('https://aw-studio-dev.github.io/showcase/', '_blank')">
+                        <div class="stat-number">100%</div>
+                        <div class="stat-label" data-i18n="about.stats.satisfaction">Client Satisfaction</div>
+                    </div>
+                    
+                    <div class="stat-item" onclick="window.open('https://aw-studio-dev.github.io/showcase/', '_blank')">
+                        <div class="stat-number">15+</div>
+                        <div class="stat-label" data-i18n="about.stats.team">Team Members</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section class="section" id="contact">
+        <div class="contact-container">
+            <div class="contact-info">
+                <h2 class="section-title" data-i18n="contact.title">Get In Touch</h2>
+                <p data-i18n="contact.subtitle">Ready to start your project? Have questions about our services? We'd love to hear from you.</p>
+                
+                <div class="contact-details">
+                    <div class="contact-item" onclick="window.open('mailto:aw.studio.dz@gmail.com', '_blank')">
+                        <div class="contact-icon">
+                            <i class="fas fa-envelope"></i>
+                        </div>
+                        <div class="contact-text">
+                            <h4 data-i18n="contact.email">Email</h4>
+                            <p>aw.studio.dz@gmail.com</p>
+                        </div>
+                    </div>
+                    
+                    <div class="contact-item" onclick="window.open('https://wa.me/213554152496', '_blank')">
+                        <div class="contact-icon">
+                            <i class="fab fa-whatsapp"></i>
+                        </div>
+                        <div class="contact-text">
+                            <h4 data-i18n="contact.whatsapp">WhatsApp</h4>
+                            <p>+213 554 15 24 96</p>
+                        </div>
+                    </div>
+                    
+                    <div class="contact-item" onclick="window.open('https://aw-studio-dev.github.io/showcase/', '_blank')">
+                        <div class="contact-icon">
+                            <i class="fas fa-globe"></i>
+                        </div>
+                        <div class="contact-text">
+                            <h4 data-i18n="contact.portfolio">Portfolio</h4>
+                            <p>aw-studio-dev.github.io/showcase/</p>
+                        </div>
+                    </div>
+                    
+                    <div class="contact-item" onclick="window.open('https://github.com/AW-studio-dev', '_blank')">
+                        <div class="contact-icon">
+                            <i class="fab fa-github"></i>
+                        </div>
+                        <div class="contact-text">
+                            <h4>GitHub</h4>
+                            <p>github.com/AW-studio-dev</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="contact-form">
+                <form action="https://formspree.io/f/mldjvekr" method="POST" id="contactForm">
+                    <div class="form-group">
+                        <label for="name" data-i18n="contact.form.name">Your Name</label>
+                        <input type="text" id="name" name="name" class="form-control" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="email" data-i18n="contact.form.email">Email Address</label>
+                        <input type="email" id="email" name="email" class="form-control" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="subject" data-i18n="contact.form.subject">Subject</label>
+                        <input type="text" id="subject" name="subject" class="form-control" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="message" data-i18n="contact.form.message">Message</label>
+                        <textarea id="message" name="message" class="form-control" required></textarea>
+                    </div>
+                    
+                    <button type="submit" class="submit-btn" data-i18n="contact.form.submit">Send Message</button>
+                </form>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="footer-container">
+            <div class="footer-about">
+                <a href="#" class="footer-logo">
+                    <div class="footer-logo-icon">AW</div>
+                    <span>Studio</span>
+                </a>
+                <p data-i18n="footer.description">Premium web development services tailored to your business needs. Let's build something amazing together.</p>
+                
+                <div class="social-links">
+                    <a href="#" class="social-link" onclick="window.open('https://www.facebook.com/profile.php?id=61567468048179', '_blank')"><i class="fab fa-facebook-f"></i></a>
+                    <a href="#" class="social-link" onclick="window.open('https://www.tiktok.com/@aw.studio.dz', '_blank')"><i class="fab fa-tiktok"></i></a>
+                </div>
+            </div>
+            
+            <div class="footer-links">
+                <h3 data-i18n="footer.links1.title">Quick Links</h3>
+                <ul>
+                    <li><a href="#home" data-i18n="nav.home">Home</a></li>
+                    <li><a href="#services" data-i18n="nav.services">Services</a></li>
+                    <li><a href="#portfolio" data-i18n="nav.portfolio">Portfolio</a></li>
+                    <li><a href="#about" data-i18n="nav.about">About</a></li>
+                    <li><a href="#contact" data-i18n="nav.contact">Contact</a></li>
+                </ul>
+            </div>
+            
+            <div class="footer-links">
+                <h3 data-i18n="footer.links2.title">Services</h3>
+                <ul>
+                    <li><a href="https://aw-studio-dev.github.io/showcase/" data-i18n="services.service1.title" target="_blank">Web Development</a></li>
+                    <li><a href="https://aw-studio-dev.github.io/showcase/" data-i18n="services.service2.title" target="_blank">UI/UX Design</a></li>
+                    <li><a href="https://aw-studio-dev.github.io/showcase/" data-i18n="services.service5.title" target="_blank">E-Commerce</a></li>
+                    <li><a href="https://aw-studio-dev.github.io/showcase/" data-i18n="services.service4.title" target="_blank">SEO Optimization</a></li>
+                    <li><a href="https://aw-studio-dev.github.io/showcase/" data-i18n="services.service6.title" target="_blank">Web Hosting</a></li>
+                </ul>
+            </div>
+            
+            <div class="footer-newsletter">
+                <h3 data-i18n="footer.newsletter.title">Newsletter</h3>
+                <p data-i18n="footer.newsletter.subtitle">Subscribe to our newsletter for the latest updates and insights.</p>
+                
+                <form class="newsletter-form">
+                    <input type="email" placeholder="Your Email" class="newsletter-input" required>
+                    <button type="submit" class="newsletter-btn"><i class="fas fa-paper-plane"></i></button>
+                </form>
+            </div>
+        </div>
+        
+        <div class="footer-bottom">
+            <p>&copy; <span id="currentYear"></span> AW Studio. <span data-i18n="footer.rights">All Rights Reserved.</span></p>
+        </div>
+    </footer>
+
+    <script>
+        // Mobile Menu Toggle
+        const mobileMenuBtn = document.querySelector('.mobile-menu-btn');
+        const nav = document.querySelector('nav');
+        
+        mobileMenuBtn.addEventListener('click', () => {
+            nav.classList.toggle('active');
+        });
+        
+        // Theme Toggle
+        const themeToggle = document.querySelector('.theme-toggle');
+        const body = document.body;
+        
+        // Set dark mode as default
+        body.classList.add('dark-mode');
+        themeToggle.innerHTML = '<i class="fas fa-sun"></i>';
+        localStorage.setItem('theme', 'dark');
+        
+        themeToggle.addEventListener('click', () => {
+            body.classList.toggle('dark-mode');
+            
+            if (body.classList.contains('dark-mode')) {
+                themeToggle.innerHTML = '<i class="fas fa-sun"></i>';
+                localStorage.setItem('theme', 'dark');
+            } else {
+                themeToggle.innerHTML = '<i class="fas fa-moon"></i>';
+                localStorage.setItem('theme', 'light');
+            }
+        });
+        
+        // Set current year in footer
+        document.getElementById('currentYear').textContent = new Date().getFullYear();
+
+        // Language Translation System
+        const translations = {
+            en: {
+                language: {
+                    english: "English",
+                    french: "French",
+                    arabic: "Arabic"
+                },
+                nav: {
+                    home: "Home",
+                    services: "Services",
+                    portfolio: "Portfolio",
+                    about: "About",
+                    contact: "Contact"
+                },
+                hero: {
+                    title: "Premium Web Solutions for Modern Businesses",
+                    subtitle: "We craft high-performance websites that drive results and elevate your digital presence to new heights.",
+                    button1: "Get Started",
+                    button2: "View Work"
+                },
+                services: {
+                    title: "Our Services",
+                    learn_more: "Learn more",
+                    service1: {
+                        title: "Custom Development",
+                        description: "Tailored web solutions built from scratch to meet your specific business requirements and goals."
+                    },
+                    service2: {
+                        title: "UI/UX Design",
+                        description: "Beautiful, intuitive interfaces designed to enhance user experience and drive engagement."
+                    },
+                    service3: {
+                        title: "Responsive Design",
+                        description: "Flawless performance across all devices, ensuring your website looks perfect on any screen."
+                    },
+                    service4: {
+                        title: "SEO Optimization",
+                        description: "Technical and content optimization to improve your search rankings and organic traffic."
+                    },
+                    service5: {
+                        title: "E-Commerce",
+                        description: "Powerful online stores with secure payment gateways and intuitive product management."
+                    },
+                    service6: {
+                        title: "Web Hosting",
+                        description: "Reliable, high-speed hosting with 99.9% uptime and expert technical support."
+                    }
+                },
+                portfolio: {
+                    title: "Our Portfolio",
+                    view_project: "View Project",
+                    project1: {
+                        title: "E-Commerce Platform",
+                        description: "Complete online store with custom CMS and payment integration"
+                    },
+                    project2: {
+                        title: "Corporate Website",
+                        description: "Modern corporate site with interactive elements"
+                    },
+                    project3: {
+                        title: "Mobile App Dashboard",
+                        description: "Analytics dashboard for health tracking app"
+                    },
+                    project4: {
+                        title: "Restaurant Website",
+                        description: "Online reservation system with menu management"
+                    },
+                    project5: {
+                        title: "Portfolio Website",
+                        description: "Creative portfolio for photography studio"
+                    },
+                    project6: {
+                        title: "Blog Platform",
+                        description: "Custom CMS for content creators"
+                    }
+                },
+                about: {
+                    title: "About AW Studio",
+                    description1: "AW Studio is a team specialized in creating full stack, fast and high-quality websites.",
+                    description2: "Our team of expert developers, designers, and strategists work collaboratively to create websites that not only look stunning but also perform exceptionally, driving real business results.",
+                    stats: {
+                        projects: "Projects Completed",
+                        satisfaction: "Client Satisfaction",
+                        team: "Team Members"
+                    }
+                },
+                contact: {
+                    title: "Get In Touch",
+                    subtitle: "Ready to start your project? Have questions about our services? We'd love to hear from you.",
+                    email: "Email",
+                    whatsapp: "WhatsApp",
+                    portfolio: "Portfolio",
+                    form: {
+                        name: "Your Name",
+                        email: "Email Address",
+                        subject: "Subject",
+                        message: "Message",
+                        submit: "Send Message"
+                    }
+                },
+                footer: {
+                    description: "Premium web development services tailored to your business needs. Let's build something amazing together.",
+                    links1: {
+                        title: "Quick Links"
+                    },
+                    links2: {
+                        title: "Services"
+                    },
+                    newsletter: {
+                        title: "Newsletter",
+                        subtitle: "Subscribe to our newsletter for the latest updates and insights."
+                    },
+                    rights: "All Rights Reserved."
+                }
+            },
+            fr: {
+                language: {
+                    english: "Anglais",
+                    french: "Français",
+                    arabic: "Arabe"
+                },
+                nav: {
+                    home: "Accueil",
+                    services: "Services",
+                    portfolio: "Portfolio",
+                    about: "À propos",
+                    contact: "Contact"
+                },
+                hero: {
+                    title: "Solutions Web Premium pour les Entreprises Modernes",
+                    subtitle: "Nous créons des sites web hautes performances qui génèrent des résultats et élèvent votre présence numérique à de nouveaux sommets.",
+                    button1: "Commencer",
+                    button2: "Voir nos réalisations"
+                },
+                services: {
+                    title: "Nos Services",
+                    learn_more: "En savoir plus",
+                    service1: {
+                        title: "Développement Sur Mesure",
+                        description: "Solutions web personnalisées conçues pour répondre à vos besoins commerciaux spécifiques."
+                    },
+                    service2: {
+                        title: "Design UI/UX",
+                        description: "Interfaces belles et intuitives conçues pour améliorer l'expérience utilisateur."
+                    },
+                    service3: {
+                        title: "Design Responsive",
+                        description: "Performance parfaite sur tous les appareils, garantissant que votre site est impeccable sur n'importe quel écran."
+                    },
+                    service4: {
+                        title: "Optimisation SEO",
+                        description: "Optimisation technique et de contenu pour améliorer votre classement dans les moteurs de recherche."
+                    },
+                    service5: {
+                        title: "Commerce Électronique",
+                        description: "Boutiques en ligne puissantes avec des passerelles de paiement sécurisées."
+                    },
+                    service6: {
+                        title: "Hébergement Web",
+                        description: "Hébergement fiable et rapide avec 99,9% de disponibilité et support technique expert."
+                    }
+                },
+                portfolio: {
+                    title: "Notre Portfolio",
+                    view_project: "Voir le projet",
+                    project1: {
+                        title: "Plateforme E-Commerce",
+                        description: "Boutique en ligne complète avec CMS personnalisé et intégration de paiement"
+                    },
+                    project2: {
+                        title: "Site Web Corporatif",
+                        description: "Site corporatif moderne avec éléments interactifs"
+                    },
+                    project3: {
+                        title: "Tableau de Bord Mobile",
+                        description: "Tableau de bord d'analyse pour application de suivi santé"
+                    },
+                    project4: {
+                        title: "Site Web de Restaurant",
+                        description: "Système de réservation en ligne avec gestion de menu"
+                    },
+                    project5: {
+                        title: "Site Web Portfolio",
+                        description: "Portfolio créatif pour studio de photographie"
+                    },
+                    project6: {
+                        title: "Plateforme de Blog",
+                        description: "CMS personnalisé pour créateurs de contenu"
+                    }
+                },
+                about: {
+                    title: "À propos de AW Studio",
+                    description1: "AW Studio est une équipe spécialisée dans la création de sites web full stack, rapides et de haute qualité.",
+                    description2: "Notre équipe de développeurs, designers et stratèges travaille en collaboration pour créer des sites web qui non seulement sont magnifiques mais qui fonctionnent exceptionnellement bien, générant des résultats commerciaux concrets.",
+                    stats: {
+                        projects: "Projets Complétés",
+                        satisfaction: "Satisfaction Client",
+                        team: "Membres d'Équipe"
+                    }
+                },
+                contact: {
+                    title: "Contactez-Nous",
+                    subtitle: "Prêt à commencer votre projet? Des questions sur nos services? Nous serions ravis d'avoir de vos nouvelles.",
+                    email: "Email",
+                    whatsapp: "WhatsApp",
+                    portfolio: "Portfolio",
+                    form: {
+                        name: "Votre Nom",
+                        email: "Adresse Email",
+                        subject: "Sujet",
+                        message: "Message",
+                        submit: "Envoyer"
+                    }
+                },
+                footer: {
+                    description: "Services de développement web premium adaptés à vos besoins commerciaux. Construisons quelque chose d'extraordinaire ensemble.",
+                    links1: {
+                        title: "Liens Rapides"
+                    },
+                    links2: {
+                        title: "Services"
+                    },
+                    newsletter: {
+                        title: "Newsletter",
+                        subtitle: "Abonnez-vous à notre newsletter pour les dernières mises à jour et insights."
+                    },
+                    rights: "Tous Droits Réservés."
+                }
+            },
+            ar: {
+                language: {
+                    english: "الإنجليزية",
+                    french: "الفرنسية",
+                    arabic: "العربية"
+                },
+                nav: {
+                    home: "الرئيسية",
+                    services: "الخدمات",
+                    portfolio: "الأعمال",
+                    about: "من نحن",
+                    contact: "اتصل بنا"
+                },
+                hero: {
+                    title: "حلول ويب متميزة للشركات الحديثة",
+                    subtitle: "نحن نصنع مواقع ويب عالية الأداء تحقق النتائج وترفع من وجودك الرقمي إلى آفاق جديدة.",
+                    button1: "ابدأ الآن",
+                    button2: "عرض الأعمال"
+                },
+                services: {
+                    title: "خدماتنا",
+                    learn_more: "المزيد",
+                    service1: {
+                        title: "تطوير مخصص",
+                        description: "حلول ويب مصممة خصيصًا لتلبية متطلبات وأهداف عملك المحددة."
+                    },
+                    service2: {
+                        title: "تصميم واجهة المستخدم",
+                        description: "واجهات جمية وبديهية مصممة لتعزيز تجربة المستخدم وزيادة التفاعل."
+                    },
+                    service3: {
+                        title: "تصميم متجاوب",
+                        description: "أداء لا تشوبه شائبة عبر جميع الأجهزة، مما يضمن أن موقعك يبدو مثاليًا على أي شاشة."
+                    },
+                    service4: {
+                        title: "تحسين محركات البحث",
+                        description: "تحسين فني للمحتوى لتحسين ترتيبك في نتائج البحث وزيادة الزيارات العضوية."
+                    },
+                    service5: {
+                        title: "التجارة الإلكترونية",
+                        description: "متاجر إلكترونية قوية مع بوابات دفع آمنة وإدارة منتجات سهلة."
+                    },
+                    service6: {
+                        title: "استضافة الويب",
+                        description: "استضافة موثوقة وسريعة مع وقت تشغيل 99.9٪ ودعم فني من الخبراء."
+                    }
+                },
+                portfolio: {
+                    title: "أعمالنا",
+                    view_project: "عرض المشروع",
+                    project1: {
+                        title: "منصة تجارة إلكترونية",
+                        description: "متجر إلكتروني كامل مع نظام إدارة محتوى مخصص وتكامل دفع"
+                    },
+                    project2: {
+                        title: "موقع شركة",
+                        description: "موقع شركة حديث مع عناصر تفاعلية"
+                    },
+                    project3: {
+                        title: "لوحة تحكم تطبيق جوال",
+                        description: "لوحة تحكم تحليلية لتطبيق تتبع الصحة"
+                    },
+                    project4: {
+                        title: "موقع مطعم",
+                        description: "نظام حجز عبر الإنترنت مع إدارة القوائم"
+                    },
+                    project5: {
+                        title: "موقع ملف شخصي",
+                        description: "ملف شخصي إبداعي لاستوديو تصوير"
+                    },
+                    project6: {
+                        title: "منصة مدونة",
+                        description: "نظام إدارة محتوى مخصص لصانعي المحتوى"
+                    }
+                },
+                about: {
+                    title: "عن AW Studio",
+                    description1: "AW Studio هي فريق متخصص في إنشاء مواقع ويب كاملة، سريعة وعالية الجودة.",
+                    description2: "يعمل فريقنا من المطورين والمصممين والخبراء الاستراتيجيين بشكل تعاوني لإنشاء مواقع ويب لا تبدو رائعة فحسب، بل تعمل أيضًا بشكل استثنائي، مما يحقق نتائج تجارية حقيقية.",
+                    stats: {
+                        projects: "المشاريع المكتملة",
+                        satisfaction: "رضا العملاء",
+                        team: "أعضاء الفريق"
+                    }
+                },
+                contact: {
+                    title: "تواصل معنا",
+                    subtitle: "هل أنت مستعد لبدء مشروعك؟ لديك أسئلة حول خدماتنا؟ نحن نحب أن نسمع منك.",
+                    email: "البريد الإلكتروني",
+                    whatsapp: "واتساب",
+                    portfolio: "الأعمال",
+                    form: {
+                        name: "اسمك",
+                        email: "البريد الإلكتروني",
+                        subject: "الموضوع",
+                        message: "الرسالة",
+                        submit: "إرسال"
+                    }
+                },
+                footer: {
+                    description: "خدمات تطوير الويب المتميزة المصممة خصيصًا لاحتياجات عملك. دعونا نبني شيئًا مذهلاً معًا.",
+                    links1: {
+                        title: "روابط سريعة"
+                    },
+                    links2: {
+                        title: "الخدمات"
+                    },
+                    newsletter: {
+                        title: "النشرة الإخبارية",
+                        subtitle: "اشترك في نشرتنا الإخبارية للحصول على آخر التحديثات والرؤى."
+                    },
+                    rights: "جميع الحقوق محفوظة."
+                }
+            }
+        };
+
+        // Language switching functionality
+        const languageBtn = document.getElementById('languageBtn');
+        const languageElements = document.querySelectorAll('[data-i18n]');
+        const languageLinks = document.querySelectorAll('.language-dropdown a');
+
+        // Set initial language from localStorage or default to English
+        let currentLang = localStorage.getItem('language') || 'en';
+        updateLanguage(currentLang);
+
+        // Handle language selection
+        languageLinks.forEach(link => {
+            link.addEventListener('click', (e) => {
+                e.preventDefault();
+                const lang = link.getAttribute('data-lang');
+                currentLang = lang;
+                localStorage.setItem('language', lang);
+                updateLanguage(lang);
+                
+                // Update language button text
+                const langText = translations[lang].language[lang];
+                languageBtn.querySelector('span').textContent = langText;
+            });
+        });
+
+        // Update all elements with the selected language
+        function updateLanguage(lang) {
+            languageElements.forEach(element => {
+                const keys = element.getAttribute('data-i18n').split('.');
+                let translation = translations[lang];
+                
+                keys.forEach(key => {
+                    translation = translation[key];
+                });
+                
+                if (translation) {
+                    element.textContent = translation;
+                    
+                    // Update placeholders for input fields
+                    if (element.tagName === 'INPUT' || element.tagName === 'TEXTAREA') {
+                        element.setAttribute('placeholder', translation);
+                    }
+                }
+            });
+            
+            // Update RTL for Arabic
+            const heroImage = document.querySelector('.hero-image');
+            if (lang === 'ar') {
+                document.documentElement.dir = 'rtl';
+                document.body.style.textAlign = 'right';
+                heroImage.style.right = 'auto';
+                heroImage.style.left = '5%';
+            } else {
+                document.documentElement.dir = 'ltr';
+                document.body.style.textAlign = 'left';
+                heroImage.style.left = 'auto';
+                heroImage.style.right = '5%';
+            }
+        }
+
+        // GSAP Animations
+        document.addEventListener('DOMContentLoaded', () => {
+            gsap.registerPlugin(ScrollTrigger);
+            
+            // Animate hero elements
+            gsap.from('.hero h1', {
+                duration: 1,
+                opacity: 0,
+                y: 30,
+                ease: 'power3.out'
+            });
+            
+            gsap.from('.hero p', {
+                duration: 1,
+                opacity: 0,
+                y: 30,
+                delay: 0.3,
+                ease: 'power3.out'
+            });
+            
+            gsap.from('.btn', {
+                duration: 1,
+                opacity: 0,
+                y: 30,
+                delay: 0.6,
+                ease: 'power3.out',
+                stagger: 0.1
+            });
+            
+            gsap.from('.hero-image', {
+                duration: 1.5,
+                opacity: 0,
+                x: 100,
+                delay: 0.3,
+                ease: 'power3.out'
+            });
+            
+            // Animate section titles
+            gsap.utils.toArray('.section-title').forEach(title => {
+                gsap.from(title, {
+                    scrollTrigger: {
+                        trigger: title,
+                        start: 'top 80%'
+                    },
+                    duration: 0.8,
+                    opacity: 0,
+                    y: 50,
+                    ease: 'power3.out'
+                });
+            });
+            
+            // Animate service cards
+            gsap.utils.toArray('.service-card').forEach((card, i) => {
+                gsap.from(card, {
+                    scrollTrigger: {
+                        trigger: card,
+                        start: 'top 80%'
+                    },
+                    duration: 0.8,
+                    opacity: 0,
+                    y: 50,
+                    delay: i * 0.1,
+                    ease: 'power3.out'
+                });
+            });
+            
+            // Animate portfolio items
+            gsap.utils.toArray('.portfolio-item').forEach((item, i) => {
+                gsap.from(item, {
+                    scrollTrigger: {
+                        trigger: item,
+                        start: 'top 80%'
+                    },
+                    duration: 0.8,
+                    opacity: 0,
+                    y: 50,
+                    delay: i * 0.1,
+                    ease: 'power3.out'
+                });
+            });
+            
+            // Animate about section
+            gsap.from('.about-image', {
+                scrollTrigger: {
+                    trigger: '.about-content',
+                    start: 'top 80%'
+                },
+                duration: 1,
+                opacity: 0,
+                x: -50,
+                ease: 'power3.out'
+            });
+            
+            gsap.from('.about-text', {
+                scrollTrigger: {
+                    trigger: '.about-content',
+                    start: 'top 80%'
+                },
+                duration: 1,
+                opacity: 0,
+                x: 50,
+                ease: 'power3.out'
+            });
+            
+            // Animate contact section
+            gsap.from('.contact-info', {
+                scrollTrigger: {
+                    trigger: '.contact-container',
+                    start: 'top 80%'
+                },
+                duration: 1,
+                opacity: 0,
+                x: -50,
+                ease: 'power3.out'
+            });
+            
+            gsap.from('.contact-form', {
+                scrollTrigger: {
+                    trigger: '.contact-container',
+                    start: 'top 80%'
+                },
+                duration: 1,
+                opacity: 0,
+                x: 50,
+                ease: 'power3.out'
+            });
+        });
+        
+        // Smooth Scrolling for Anchor Links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function(e) {
+                e.preventDefault();
+                
+                const targetId = this.getAttribute('href');
+                if (targetId === '#') return;
+                
+                const targetElement = document.querySelector(targetId);
+                if (targetElement) {
+                    window.scrollTo({
+                        top: targetElement.offsetTop - 80,
+                        behavior: 'smooth'
+                    });
+                    
+                    // Close mobile menu if open
+                    nav.classList.remove('active');
+                }
+            });
+        });
+        
+        // Header Scroll Effect
+        const header = document.querySelector('header');
+        window.addEventListener('scroll', () => {
+            if (window.scrollY > 50) {
+                header.style.padding = '1rem 5%';
+                header.style.boxShadow = '0 2px 10px rgba(0,0,0,0.1)';
+            } else {
+                header.style.padding = '1.5rem 5%';
+                header.style.boxShadow = 'none';
+            }
+        });
+        
+        // Form submission
+        document.getElementById('contactForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const form = this;
+            const formData = new FormData(form);
+            
+            fetch(form.action, {
+                method: 'POST',
+                body: formData,
+                headers: {
+                    'Accept': 'application/json'
+                }
+            })
+            .then(response => {
+                if (response.ok) {
+                    alert(currentLang === 'en' ? 'Thank you for your message! We will get back to you soon.' : 
+                          currentLang === 'fr' ? 'Merci pour votre message! Nous vous contacterons bientôt.' :
+                          'شكرًا لك على رسالتك! سوف نعود إليك قريبًا.');
+                    form.reset();
+                } else {
+                    throw new Error('Network response was not ok');
+                }
+            })
+            .catch(error => {
+                alert(currentLang === 'en' ? 'There was a problem sending your message. Please try again.' : 
+                      currentLang === 'fr' ? 'Un problème est survenu lors de l\'envoi de votre message. Veuillez réessayer.' :
+                      'حدثت مشكلة أثناء إرسال رسالتك. يرجى المحاولة مرة أخرى.');
+            });
+        });
+    </script>
+</body>
+</html>
