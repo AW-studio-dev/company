@@ -4,10 +4,14 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>AW Studio | Premium Web Development</title>
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🌸</text></svg>">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.11.4/gsap.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.11.4/ScrollTrigger.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vanta@0.5.21/dist/vanta.net.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/typed.js@2.0.12"></script>
     <style>
         :root {
             --primary: #7b2cbf;
@@ -59,6 +63,7 @@
             background-color: rgba(212, 163, 255, 0.95);
             box-shadow: var(--shadow-sm);
             transition: all 0.5s ease;
+            backdrop-filter: blur(10px);
         }
 
         body.dark-mode header {
@@ -69,7 +74,7 @@
         .logo {
             font-size: 1.8rem;
             font-weight: 700;
-            color: white;
+            color: rgb(154, 5, 247);
             text-decoration: none;
             display: flex;
             align-items: center;
@@ -100,7 +105,7 @@
 
         nav a {
             text-decoration: none;
-            color: white;
+            color: rgb(149, 62, 255);
             font-weight: 500;
             position: relative;
             transition: color 0.3s ease;
@@ -224,54 +229,130 @@
             margin-bottom: 1.5rem;
         }
 
+        body.dark-mode .hero  {
+            color: #5a00a9;
+        }
+
         .hero p {
             font-size: 1.2rem;
             color: var(--gray);
             margin-bottom: 2rem;
         }
 
-        body.dark-mode .hero p {
-            color: #94a3b8;
-        }
+body.dark-mode .hero p {
+    color: #8d01ffb6;
+}
 
-        .btn {
-            display: inline-block;
-            padding: 0.8rem 2rem;
-            background-color: var(--primary);
-            color: white;
-            border-radius: 6px;
-            text-decoration: none;
-            font-weight: 500;
-            transition: all 0.3s ease;
-            cursor: pointer;
-        }
+/* Primary button styles */
+.btn {
+    display: inline-block;
+    padding: 0.8rem 2rem;
+    background-color: var(--primary); /* Purple background */
+    color: white !important;
+    border-radius: 6px;
+    text-decoration: none;
+    font-weight: 500;
+    transition: all 0.3s ease;
+    cursor: pointer;
+    position: relative;
+    overflow: hidden;
+    z-index: 10; /* Ensure button stays above other elements */
+} 
 
-        .btn:hover {
-            background-color: var(--primary-dark);
-            transform: translateY(-3px);
-            box-shadow: var(--shadow-md);
-        }
+/* Button hover effect overlay */
+.btn::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(45deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+    transform: translateX(-100%);
+    transition: transform 0.3s ease;
+}
 
-        .btn-outline {
-            background-color: transparent;
-            border: 2px solid var(--primary);
-            color: var(--primary);
-            margin-left: 1rem;
-        }
+.btn:hover::after {
+    transform: translateX(100%);
+}
 
-        body.dark-mode .btn-outline {
-            color: var(--light);
-            border-color: var(--light);
-        }
+/* Button hover state */
+.btn:hover {
+    background-color: var(--primary-dark);
+    transform: translateY(-3px);
+    box-shadow: var(--shadow-md);
+}
 
-        .btn-outline:hover {
-            background-color: var(--primary);
-            color: white;
-        }
+/* Dark mode button adjustments */
+body.dark-mode .btn {
+    background-color: var(--primary-light);
+}
 
-        body.dark-mode .btn-outline:hover {
-            border-color: var(--primary);
-        }
+/* Outline button styles */
+.btn-outline {
+    background-color: transparent;
+    border: 2px solid var(--primary);
+    color: var(--primary) !important;
+    margin-left: 1rem;
+    z-index: 10; 
+}
+
+
+body.dark-mode .btn-outline {
+    color: var(--light) !important;
+    border-color: var(--light);
+}
+
+
+.btn-outline:hover {
+    background-color: var(--primary);
+    color: white !important; 
+}
+
+
+body.dark-mode .btn-outline:hover {
+    border-color: var(--primary);
+    background-color: var(--primary);
+}
+
+/* 1. Force button group to appear above everything */
+.btn-group {
+    position: relative;
+    z-index: 1000 !important;
+    transform-style: preserve-3d; /* Prevents weird z-index bugs */
+}
+
+/* 2. Nuclear button reset */
+.btn, .btn-outline {
+    all: unset !important;
+    display: inline-block !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+    padding: 0.8rem 2rem !important;
+    margin-left: 1rem !important;
+    position: relative !important;
+    z-index: 1001 !important;
+    transform: none !important;
+    background: rgba(102, 0, 255, 0) !important;
+    color: rgba(124, 5, 228, 0.466) !important;
+    border: 2px solid rgba(129, 3, 239, 0.221) !important;
+}
+
+/* 3. Contain the particle effect */
+#particles-js {
+    z-index: 1 !important;
+    pointer-events: none !important; /* Allows clicks through to buttons */
+}
+
+/* 4. Fix hero section stacking */
+.hero {
+    position: relative;
+    z-index: 0;
+}
+.hero-content {
+    position: relative;
+    z-index: 10;
+}
 
         .hero-image {
             position: absolute;
@@ -282,6 +363,9 @@
             max-width: 600px;
             cursor: pointer;
             transition: all 0.5s ease;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: var(--shadow-xl);
         }
 
         [dir="rtl"] .hero-image {
@@ -292,8 +376,431 @@
         .hero-image img {
             width: 100%;
             height: auto;
+            display: block;
+            transition: transform 0.5s ease;
+        }
+
+        /* 3D Particle Background */
+        #particles-js {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+            z-index: 1;
+        }
+
+        /* Mouse Trail */
+        .mouse-trail {
+            position: fixed;
+            width: 20px;
+            height: 20px;
+            background-color: var(--primary-light);
+            border-radius: 50%;
+            pointer-events: none;
+            z-index: 9999;
+            transform: translate(-50%, -50%);
+            mix-blend-mode: screen;
+            opacity: 0.7;
+        }
+
+        .trail-dot {
+            position: fixed;
+            width: 6px;
+            height: 6px;
+            background-color: var(--primary);
+            border-radius: 50%;
+            pointer-events: none;
+            z-index: 9998;
+            transform: translate(-50%, -50%);
+            mix-blend-mode: screen;
+        }
+
+        /* Code Preview */
+        .code-preview {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            width: 300px;
+            background: rgba(30, 41, 59, 0.9);
+            border-radius: 8px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.3);
+            z-index: 1000;
+            overflow: hidden;
+            transform: translateY(20px);
+            opacity: 0;
+            transition: all 0.3s ease;
+        }
+
+        body.dark-mode .code-preview {
+            background: rgba(248, 249, 250, 0.9);
+        }
+
+        .code-preview.active {
+            transform: translateY(0);
+            opacity: 1;
+        }
+
+        .code-header {
+            padding: 10px 15px;
+            background: rgba(0,0,0,0.2);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        body.dark-mode .code-header {
+            background: rgba(0,0,0,0.1);
+        }
+
+        .code-title {
+            font-size: 0.9rem;
+            font-weight: 600;
+            color: white;
+        }
+
+        body.dark-mode .code-title {
+            color: var(--dark);
+        }
+
+        .code-close {
+            background: none;
+            border: none;
+            color: white;
+            cursor: pointer;
+            font-size: 1rem;
+        }
+
+        body.dark-mode .code-close {
+            color: var(--dark);
+        }
+
+        .code-content {
+            padding: 15px;
+            font-family: 'Courier New', monospace;
+            font-size: 0.8rem;
+            color: #f8f8f2;
+            max-height: 200px;
+            overflow-y: auto;
+        }
+
+        body.dark-mode .code-content {
+            color: #333;
+        }
+
+        .code-content pre {
+            margin: 0;
+        }
+
+        .token.comment,
+        .token.prolog,
+        .token.doctype,
+        .token.cdata {
+            color: #8292a2;
+        }
+
+        .token.punctuation {
+            color: #f8f8f2;
+        }
+
+        body.dark-mode .token.punctuation {
+            color: #333;
+        }
+
+        .token.property,
+        .token.tag,
+        .token.constant,
+        .token.symbol,
+        .token.deleted {
+            color: #f92672;
+        }
+
+        .token.boolean,
+        .token.number {
+            color: #ae81ff;
+        }
+
+        .token.selector,
+        .token.attr-name,
+        .token.string,
+        .token.char,
+        .token.builtin,
+        .token.inserted {
+            color: #a6e22e;
+        }
+
+        .token.operator,
+        .token.entity,
+        .token.url,
+        .language-css .token.string,
+        .style .token.string,
+        .token.variable {
+            color: #f8f8f2;
+        }
+
+        body.dark-mode .token.operator,
+        body.dark-mode .token.entity,
+        body.dark-mode .token.url,
+        body.dark-mode .language-css .token.string,
+        body.dark-mode .style .token.string,
+        body.dark-mode .token.variable {
+            color: #333;
+        }
+
+        .token.atrule,
+        .token.attr-value,
+        .token.function,
+        .token.class-name {
+            color: #e6db74;
+        }
+
+        .token.keyword {
+            color: #66d9ef;
+        }
+
+        .token.regex,
+        .token.important {
+            color: #fd971f;
+        }
+
+        .token.important,
+        .token.bold {
+            font-weight: bold;
+        }
+
+        .token.italic {
+            font-style: italic;
+        }
+
+        .token.entity {
+            cursor: help;
+        }
+
+        /* AI Chatbot */
+        .chatbot-container {
+            position: fixed;
+            bottom: 20px;
+            left: 20px;
+            width: 60px;
+            height: 60px;
+            background-color: var(--primary);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            z-index: 1000;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+            transition: all 0.3s ease;
+        }
+
+        .chatbot-container:hover {
+            transform: scale(1.1);
+        }
+
+        .chatbot-icon {
+            color: white;
+            font-size: 1.5rem;
+        }
+
+        .chatbot-window {
+            position: fixed;
+            bottom: 90px;
+            left: 20px;
+            width: 350px;
+            max-height: 500px;
+            background-color: white;
             border-radius: 12px;
-            box-shadow: var(--shadow-xl);
+            box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+            z-index: 1001;
+            transform: scale(0);
+            transform-origin: bottom left;
+            transition: transform 0.3s ease;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+        }
+
+        body.dark-mode .chatbot-window {
+            background-color: #1e293b;
+        }
+
+        .chatbot-window.active {
+            transform: scale(1);
+        }
+
+        .chatbot-header {
+            padding: 15px;
+            background-color: var(--primary);
+            color: white;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .chatbot-title {
+            font-weight: 600;
+        }
+
+        .chatbot-close {
+            background: none;
+            border: none;
+            color: white;
+            cursor: pointer;
+            font-size: 1rem;
+        }
+
+        .chatbot-messages {
+            flex: 1;
+            padding: 15px;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .message {
+            max-width: 80%;
+            padding: 10px 15px;
+            border-radius: 18px;
+            font-size: 0.9rem;
+            line-height: 1.4;
+        }
+
+        .bot-message {
+            align-self: flex-start;
+            background-color: #f1f1f1;
+            color: #333;
+            border-bottom-left-radius: 5px;
+        }
+
+        body.dark-mode .bot-message {
+            background-color: #334155;
+            color: white;
+        }
+
+        .user-message {
+            align-self: flex-end;
+            background-color: var(--primary);
+            color: white;
+            border-bottom-right-radius: 5px;
+        }
+
+        .chatbot-input-container {
+            padding: 10px;
+            border-top: 1px solid #e2e8f0;
+            display: flex;
+        }
+
+        body.dark-mode .chatbot-input-container {
+            border-top-color: #334155;
+        }
+
+        .chatbot-input {
+            flex: 1;
+            padding: 10px 15px;
+            border: 1px solid #e2e8f0;
+            border-radius: 20px;
+            outline: none;
+            font-family: 'Inter', sans-serif;
+        }
+
+        body.dark-mode .chatbot-input {
+            background-color: #334155;
+            border-color: #475569;
+            color: white;
+        }
+
+        .chatbot-send {
+            margin-left: 10px;
+            width: 40px;
+            height: 40px;
+            background-color: var(--primary);
+            color: white;
+            border: none;
+            border-radius: 50%;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        /* Audio Visualizer */
+        .audio-visualizer {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            width: 50px;
+            height: 50px;
+            background-color: var(--primary);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            z-index: 1000;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        }
+
+        .audio-icon {
+            color: white;
+            font-size: 1.2rem;
+        }
+
+        .visualizer-bars {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 2px;
+            transform: scale(0);
+            transition: transform 0.3s ease;
+        }
+
+        .visualizer-bars.active {
+            transform: scale(1);
+        }
+
+        .bar {
+            width: 3px;
+            height: 10px;
+            background-color: white;
+            border-radius: 3px;
+            transform-origin: bottom;
+            animation: none;
+        }
+
+        @keyframes bar-animation {
+            0%, 100% { transform: scaleY(1); }
+            50% { transform: scaleY(2); }
+        }
+
+        /* Shader Effects */
+        .shader-effect {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: -1;
+            opacity: 0.1;
+            mix-blend-mode: screen;
+        }
+
+        /* Typing Animation */
+        .typed-cursor {
+            opacity: 1;
+            animation: blink 0.7s infinite;
+        }
+
+        @keyframes blink {
+            0% { opacity: 1; }
+            50% { opacity: 0; }
+            100% { opacity: 1; }
         }
 
         /* Services Section */
@@ -322,6 +829,8 @@
             box-shadow: var(--shadow-lg);
             transition: all 0.5s ease;
             cursor: pointer;
+            position: relative;
+            overflow: hidden;
         }
 
         body.dark-mode .service-card {
@@ -331,6 +840,22 @@
         .service-card:hover {
             transform: translateY(-10px);
             box-shadow: var(--shadow-xl);
+        }
+
+        .service-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(45deg, transparent, rgba(123, 44, 191, 0.1), transparent);
+            transform: translateX(-100%);
+            transition: transform 0.6s ease;
+        }
+
+        .service-card:hover::before {
+            transform: translateX(100%);
         }
 
         .service-icon {
@@ -490,6 +1015,21 @@
 
         .stat-item {
             text-align: center;
+            padding: 1.5rem;
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: var(--shadow-sm);
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        body.dark-mode .stat-item {
+            background-color: #1e293b;
+        }
+
+        .stat-item:hover {
+            transform: translateY(-5px);
+            box-shadow: var(--shadow-md);
         }
 
         .stat-number {
@@ -535,6 +1075,17 @@
             align-items: center;
             margin-bottom: 1.5rem;
             cursor: pointer;
+            transition: all 0.3s ease;
+            padding: 10px;
+            border-radius: 8px;
+        }
+
+        .contact-item:hover {
+            background-color: rgba(123, 44, 191, 0.1);
+        }
+
+        body.dark-mode .contact-item:hover {
+            background-color: rgba(157, 78, 221, 0.2);
         }
 
         .contact-icon {
@@ -584,7 +1135,7 @@
         .form-control {
             width: 100%;
             padding: 0.8rem 1rem;
-            border: 1px solid #e2e8f0";
+            border: 1px solid #e2e8f0;
             border-radius: 6px;
             font-family: 'Inter', sans-serif;
             transition: all 0.3s ease;
@@ -749,6 +1300,11 @@
             font-family: 'Inter', sans-serif;
         }
 
+        body.dark-mode .newsletter-input {
+            background-color: #334155;
+            color: white;
+        }
+
         .newsletter-btn {
             padding: 0 1.5rem;
             background-color: var(--primary);
@@ -785,6 +1341,89 @@
             animation: float 6s ease-in-out infinite;
         }
 
+        /* WASM Demo */
+        .wasm-demo {
+            position: fixed;
+            bottom: 20px;
+            right: 340px;
+            width: 50px;
+            height: 50px;
+            background-color: var(--primary);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            z-index: 1000;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        }
+
+        .wasm-icon {
+            color: white;
+            font-size: 1.2rem;
+        }
+
+        .wasm-window {
+            position: fixed;
+            bottom: 80px;
+            right: 340px;
+            width: 300px;
+            background-color: white;
+            border-radius: 12px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+            z-index: 1001;
+            transform: scale(0);
+            transform-origin: bottom right;
+            transition: transform 0.3s ease;
+            padding: 20px;
+        }
+
+        body.dark-mode .wasm-window {
+            background-color: #1e293b;
+        }
+
+        .wasm-window.active {
+            transform: scale(1);
+        }
+
+        .wasm-title {
+            font-weight: 600;
+            margin-bottom: 15px;
+            color: var(--dark);
+        }
+
+        body.dark-mode .wasm-title {
+            color: white;
+        }
+
+        .wasm-input {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 15px;
+            border: 1px solid #e2e8f0;
+            border-radius: 6px;
+            font-family: 'Inter', sans-serif;
+        }
+
+        body.dark-mode .wasm-input {
+            background-color: #334155;
+            border-color: #475569;
+            color: white;
+        }
+
+        .wasm-result {
+            padding: 10px;
+            background-color: #f1f1f1;
+            border-radius: 6px;
+            font-family: monospace;
+            margin-top: 15px;
+        }
+
+        body.dark-mode .wasm-result {
+            background-color: #334155;
+            color: white;
+        }
+
         /* Responsive */
         @media (max-width: 1024px) {
             .hero h1 {
@@ -806,6 +1445,10 @@
                 width: 100%;
                 max-width: 100%;
                 margin-top: 3rem;
+            }
+
+            .wasm-demo, .wasm-window {
+                right: 20px;
             }
         }
 
@@ -865,6 +1508,15 @@
             .language-selector {
                 margin-left: 0.5rem;
             }
+
+            .chatbot-window {
+                width: 300px;
+                max-height: 400px;
+            }
+
+            .code-preview {
+                width: 250px;
+            }
         }
 
         @media (max-width: 480px) {
@@ -884,6 +1536,16 @@
             
             .stats {
                 grid-template-columns: 1fr;
+            }
+
+            .chatbot-window {
+                width: 280px;
+                left: 10px;
+            }
+
+            .wasm-window {
+                width: 280px;
+                right: 10px;
             }
         }
     </style>
@@ -929,13 +1591,14 @@
 
     <!-- Hero Section -->
     <section class="hero" id="home">
+        <div id="particles-js"></div>
         <div class="hero-content">
             <h1 data-i18n="hero.title">Premium Web Solutions for Modern Businesses</h1>
             <p data-i18n="hero.subtitle">We craft high-performance websites that drive results and elevate your digital presence to new heights.</p>
-            <div class="btn-group">
-                <a href="https://aw-studio-dev.github.io/showcase/" class="btn" data-i18n="hero.button1" target="_blank">Get Started</a>
-                <a href="https://aw-studio-dev.github.io/showcase/" class="btn btn-outline" data-i18n="hero.button2" target="_blank">View Work</a>
-            </div>
+            <div class="btn-group" style="background: rgba(255, 0, 0, 0); padding: 20px;">
+              <a href="https://www.instagram.com/aw.studio.dz/" class="btn" style="background: rgb(162, 0, 255); color: black !important;">GET STARTED</a>
+              <a href="https://aw-studio-dev.github.io/showcase/" class="btn btn-outline" style="background: rgb(166, 0, 255); color: black !important;">VIEW WORK</a>
+          </div>
         </div>
         
         <div class="hero-image floating" onclick="window.open('https://aw-studio-dev.github.io/showcase/', '_blank')">
@@ -1228,6 +1891,99 @@
             <p>&copy; <span id="currentYear"></span> AW Studio. <span data-i18n="footer.rights">All Rights Reserved.</span></p>
         </div>
     </footer>
+
+    <!-- Interactive Elements -->
+    <div class="mouse-trail" id="mouseTrail"></div>
+    <div class="trail-dot" id="trailDot1"></div>
+    <div class="trail-dot" id="trailDot2"></div>
+    <div class="trail-dot" id="trailDot3"></div>
+    <div class="trail-dot" id="trailDot4"></div>
+    
+    <!-- Code Preview Window -->
+    <div class="code-preview" id="codePreview">
+        <div class="code-header">
+            <span class="code-title">Code Preview</span>
+            <button class="code-close" id="codeClose">&times;</button>
+        </div>
+        <div class="code-content">
+            <pre><code class="language-javascript">
+// Sample JavaScript code with syntax highlighting
+function greet(name) {
+    return `Hello, ${name}!`;
+}
+
+class Developer {
+    constructor(name, skills) {
+        this.name = name;
+        this.skills = skills;
+    }
+    
+    introduce() {
+        console.log(`I'm ${this.name} and I know ${this.skills.join(', ')}`);
+    }
+}
+
+const dev = new Developer('Alex', ['JS', 'React', 'Node']);
+dev.introduce();
+            </code></pre>
+        </div>
+    </div>
+    
+    <!-- AI Chatbot -->
+    <div class="chatbot-container" id="chatbotContainer">
+        <div class="chatbot-icon">
+            <i class="fas fa-robot"></i>
+        </div>
+    </div>
+    
+    <div class="chatbot-window" id="chatbotWindow">
+        <div class="chatbot-header">
+            <span class="chatbot-title">AW Studio Assistant</span>
+            <button class="chatbot-close" id="chatbotClose">&times;</button>
+        </div>
+        <div class="chatbot-messages" id="chatbotMessages">
+            <div class="message bot-message">
+                Hello! I'm your AI assistant. How can I help you today?
+            </div>
+        </div>
+        <div class="chatbot-input-container">
+            <input type="text" class="chatbot-input" id="chatbotInput" placeholder="Type your message...">
+            <button class="chatbot-send" id="chatbotSend">
+                <i class="fas fa-paper-plane"></i>
+            </button>
+        </div>
+    </div>
+    
+    <!-- Audio Visualizer -->
+    <div class="audio-visualizer" id="audioVisualizer">
+        <div class="audio-icon">
+            <i class="fas fa-music"></i>
+        </div>
+        <div class="visualizer-bars" id="visualizerBars">
+            <div class="bar" id="bar1"></div>
+            <div class="bar" id="bar2"></div>
+            <div class="bar" id="bar3"></div>
+            <div class="bar" id="bar4"></div>
+            <div class="bar" id="bar5"></div>
+        </div>
+    </div>
+    
+    <!-- WASM Demo -->
+    <div class="wasm-demo" id="wasmDemo">
+        <div class="wasm-icon">
+            <i class="fab fa-js"></i>
+        </div>
+    </div>
+    
+    <div class="wasm-window" id="wasmWindow">
+        <div class="wasm-title">WASM Fibonacci Demo</div>
+        <input type="number" class="wasm-input" id="wasmInput" placeholder="Enter a number" min="1" max="50">
+        <button class="submit-btn" id="wasmCalculate">Calculate</button>
+        <div class="wasm-result" id="wasmResult">Result will appear here</div>
+    </div>
+    
+    <!-- Shader Effect Canvas -->
+    <canvas class="shader-effect" id="shaderCanvas"></canvas>
 
     <script>
         // Mobile Menu Toggle
@@ -1665,6 +2421,344 @@
                 heroImage.style.left = 'auto';
                 heroImage.style.right = '5%';
             }
+        }
+
+        // 3D Particle Background
+        VANTA.NET({
+            el: "#particles-js",
+            mouseControls: true,
+            touchControls: true,
+            gyroControls: false,
+            minHeight: 200.00,
+            minWidth: 200.00,
+            scale: 1.00,
+            scaleMobile: 1.00,
+            color: 0x7b2cbf,
+            backgroundColor: 0xf3e9ff,
+            points: 12.00,
+            maxDistance: 22.00,
+            spacing: 18.00
+        });
+
+        // Mouse Trail Effect
+        const mouseTrail = document.getElementById('mouseTrail');
+        const trailDots = [
+            document.getElementById('trailDot1'),
+            document.getElementById('trailDot2'),
+            document.getElementById('trailDot3'),
+            document.getElementById('trailDot4')
+        ];
+
+        let mouseX = 0, mouseY = 0;
+        let posX = 0, posY = 0;
+        const delay = 0.05; // Adjust for smoother/faster trail
+
+        document.addEventListener('mousemove', (e) => {
+            mouseX = e.clientX;
+            mouseY = e.clientY;
+        });
+
+        function updateTrail() {
+            // Main trail dot
+            posX += (mouseX - posX) * delay;
+            posY += (mouseY - posY) * delay;
+            
+            mouseTrail.style.left = posX + 'px';
+            mouseTrail.style.top = posY + 'px';
+            
+            // Additional trail dots with more delay
+            trailDots.forEach((dot, index) => {
+                const dotDelay = delay * (index + 2);
+                let dotX = parseFloat(dot.style.left || posX);
+                let dotY = parseFloat(dot.style.top || posY);
+                
+                dotX += (posX - dotX) * dotDelay;
+                dotY += (posY - dotY) * dotDelay;
+                
+                dot.style.left = dotX + 'px';
+                dot.style.top = dotY + 'px';
+                dot.style.opacity = 1 - (index * 0.2);
+                dot.style.width = (20 - (index * 3)) + 'px';
+                dot.style.height = (20 - (index * 3)) + 'px';
+            });
+            
+            requestAnimationFrame(updateTrail);
+        }
+
+        updateTrail();
+
+        // Code Preview Window
+        const codePreview = document.getElementById('codePreview');
+        const codeClose = document.getElementById('codeClose');
+
+        // Show code preview after 5 seconds
+        setTimeout(() => {
+            codePreview.classList.add('active');
+        }, 5000);
+
+        codeClose.addEventListener('click', () => {
+            codePreview.classList.remove('active');
+        });
+
+        // AI Chatbot
+        const chatbotContainer = document.getElementById('chatbotContainer');
+        const chatbotWindow = document.getElementById('chatbotWindow');
+        const chatbotClose = document.getElementById('chatbotClose');
+        const chatbotMessages = document.getElementById('chatbotMessages');
+        const chatbotInput = document.getElementById('chatbotInput');
+        const chatbotSend = document.getElementById('chatbotSend');
+
+        chatbotContainer.addEventListener('click', () => {
+            chatbotWindow.classList.toggle('active');
+        });
+
+        chatbotClose.addEventListener('click', () => {
+            chatbotWindow.classList.remove('active');
+        });
+
+        function addBotMessage(text) {
+            const messageDiv = document.createElement('div');
+            messageDiv.className = 'message bot-message';
+            messageDiv.textContent = text;
+            chatbotMessages.appendChild(messageDiv);
+            chatbotMessages.scrollTop = chatbotMessages.scrollHeight;
+        }
+
+        function addUserMessage(text) {
+            const messageDiv = document.createElement('div');
+            messageDiv.className = 'message user-message';
+            messageDiv.textContent = text;
+            chatbotMessages.appendChild(messageDiv);
+            chatbotMessages.scrollTop = chatbotMessages.scrollHeight;
+        }
+
+        chatbotSend.addEventListener('click', sendMessage);
+        chatbotInput.addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') sendMessage();
+        });
+
+        function sendMessage() {
+            const message = chatbotInput.value.trim();
+            if (message) {
+                addUserMessage(message);
+                chatbotInput.value = '';
+                
+                // Simulate AI response (in a real app, this would call an API)
+                setTimeout(() => {
+                    const responses = [
+                        "I'm an AI assistant here to help you with AW Studio services.",
+                        "We specialize in web development, design, and digital solutions.",
+                        "You can learn more about our services by visiting our website.",
+                        "Would you like me to connect you with a human representative?",
+                        "Our team is available 24/7 to answer your questions."
+                    ];
+                    const randomResponse = responses[Math.floor(Math.random() * responses.length)];
+                    addBotMessage(randomResponse);
+                }, 1000);
+            }
+        }
+
+        // Audio Visualizer
+        const audioVisualizer = document.getElementById('audioVisualizer');
+        const visualizerBars = document.getElementById('visualizerBars');
+        const bars = Array.from(document.querySelectorAll('.bar'));
+        let audioContext, analyser, dataArray;
+        let isPlaying = false;
+
+        audioVisualizer.addEventListener('click', toggleAudio);
+
+        function toggleAudio() {
+            if (!isPlaying) {
+                initAudio();
+                isPlaying = true;
+                visualizerBars.classList.add('active');
+            } else {
+                if (audioContext) {
+                    audioContext.close();
+                    isPlaying = false;
+                    visualizerBars.classList.remove('active');
+                    bars.forEach(bar => bar.style.animation = 'none');
+                }
+            }
+        }
+
+        function initAudio() {
+            audioContext = new (window.AudioContext || window.webkitAudioContext)();
+            analyser = audioContext.createAnalyser();
+            analyser.fftSize = 32;
+            
+            const bufferLength = analyser.frequencyBinCount;
+            dataArray = new Uint8Array(bufferLength);
+            
+            // Create oscillator for demo (in a real app, you'd connect to actual audio)
+            const oscillator = audioContext.createOscillator();
+            oscillator.type = 'sine';
+            oscillator.frequency.setValueAtTime(440, audioContext.currentTime);
+            
+            const gainNode = audioContext.createGain();
+            gainNode.gain.setValueAtTime(0.1, audioContext.currentTime);
+            
+            oscillator.connect(gainNode);
+            gainNode.connect(analyser);
+            analyser.connect(audioContext.destination);
+            
+            oscillator.start();
+            
+            visualize();
+        }
+
+        function visualize() {
+            if (!isPlaying) return;
+            
+            analyser.getByteFrequencyData(dataArray);
+            
+            for (let i = 0; i < bars.length; i++) {
+                const value = dataArray[i] / 255;
+                const height = value * 100;
+                bars[i].style.height = `${10 + height}px`;
+                bars[i].style.animation = `bar-animation ${0.5 + Math.random() * 0.5}s infinite alternate`;
+                bars[i].style.animationDelay = `${i * 0.1}s`;
+            }
+            
+            requestAnimationFrame(visualize);
+        }
+
+        // WASM Demo
+        const wasmDemo = document.getElementById('wasmDemo');
+        const wasmWindow = document.getElementById('wasmWindow');
+        const wasmInput = document.getElementById('wasmInput');
+        const wasmCalculate = document.getElementById('wasmCalculate');
+        const wasmResult = document.getElementById('wasmResult');
+
+        wasmDemo.addEventListener('click', () => {
+            wasmWindow.classList.toggle('active');
+        });
+
+        // Simulate WASM functionality with JavaScript
+        wasmCalculate.addEventListener('click', () => {
+            const num = parseInt(wasmInput.value);
+            if (num && num > 0 && num <= 50) {
+                const result = fibonacci(num);
+                wasmResult.textContent = `Fibonacci(${num}) = ${result}`;
+            } else {
+                wasmResult.textContent = 'Please enter a number between 1 and 50';
+            }
+        });
+
+        function fibonacci(n) {
+            let a = 0, b = 1, temp;
+            for (let i = 0; i < n; i++) {
+                temp = a;
+                a = b;
+                b = temp + b;
+            }
+            return a;
+        }
+
+        // WebGL Shader Effect
+        const shaderCanvas = document.getElementById('shaderCanvas');
+        shaderCanvas.width = window.innerWidth;
+        shaderCanvas.height = window.innerHeight;
+        
+        const gl = shaderCanvas.getContext('webgl');
+        if (!gl) {
+            console.error('WebGL not supported');
+        } else {
+            // Vertex shader
+            const vsSource = `
+                attribute vec2 position;
+                void main() {
+                    gl_Position = vec4(position, 0.0, 1.0);
+                }
+            `;
+            
+            // Fragment shader with glitch effect
+            const fsSource = `
+                precision highp float;
+                uniform float time;
+                uniform vec2 resolution;
+                
+                void main() {
+                    vec2 uv = gl_FragCoord.xy / resolution.xy;
+                    
+                    // Create glitch effect
+                    float glitch = sin(time * 10.0) * 0.01;
+                    uv.x += glitch;
+                    
+                    // Create color distortion
+                    vec3 color;
+                    color.r = abs(sin(time * 0.5 + uv.x * 10.0));
+                    color.g = abs(sin(time * 0.7 + uv.y * 10.0));
+                    color.b = abs(sin(time * 0.9 + (uv.x + uv.y) * 5.0));
+                    
+                    // Add noise
+                    float noise = fract(sin(dot(uv, vec2(12.9898, 78.233))) * 43758.5453);
+                    noise = fract(noise * time);
+                    color += noise * 0.1;
+                    
+                    gl_FragColor = vec4(color, 0.1);
+                }
+            `;
+            
+            // Compile shaders
+            const vertexShader = gl.createShader(gl.VERTEX_SHADER);
+            gl.shaderSource(vertexShader, vsSource);
+            gl.compileShader(vertexShader);
+            
+            const fragmentShader = gl.createShader(gl.FRAGMENT_SHADER);
+            gl.shaderSource(fragmentShader, fsSource);
+            gl.compileShader(fragmentShader);
+            
+            // Create shader program
+            const shaderProgram = gl.createProgram();
+            gl.attachShader(shaderProgram, vertexShader);
+            gl.attachShader(shaderProgram, fragmentShader);
+            gl.linkProgram(shaderProgram);
+            gl.useProgram(shaderProgram);
+            
+            // Set up geometry
+            const positionBuffer = gl.createBuffer();
+            gl.bindBuffer(gl.ARRAY_BUFFER, positionBuffer);
+            const positions = [
+                -1.0, -1.0,
+                 1.0, -1.0,
+                -1.0,  1.0,
+                 1.0,  1.0,
+            ];
+            gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(positions), gl.STATIC_DRAW);
+            
+            const positionAttributeLocation = gl.getAttribLocation(shaderProgram, "position");
+            gl.enableVertexAttribArray(positionAttributeLocation);
+            gl.vertexAttribPointer(positionAttributeLocation, 2, gl.FLOAT, false, 0, 0);
+            
+            // Get uniform locations
+            const timeUniformLocation = gl.getUniformLocation(shaderProgram, "time");
+            const resolutionUniformLocation = gl.getUniformLocation(shaderProgram, "resolution");
+            
+            // Set resolution
+            gl.uniform2f(resolutionUniformLocation, shaderCanvas.width, shaderCanvas.height);
+            
+            // Animation loop
+            let startTime = Date.now();
+            function animate() {
+                const currentTime = Date.now();
+                const elapsedTime = (currentTime - startTime) / 1000;
+                
+                gl.uniform1f(timeUniformLocation, elapsedTime);
+                gl.drawArrays(gl.TRIANGLE_STRIP, 0, 4);
+                
+                requestAnimationFrame(animate);
+            }
+            
+            animate();
+            
+            // Handle resize
+            window.addEventListener('resize', () => {
+                shaderCanvas.width = window.innerWidth;
+                shaderCanvas.height = window.innerHeight;
+                gl.viewport(0, 0, shaderCanvas.width, shaderCanvas.height);
+                gl.uniform2f(resolutionUniformLocation, shaderCanvas.width, shaderCanvas.height);
+            });
         }
 
         // GSAP Animations
